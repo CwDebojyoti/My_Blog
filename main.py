@@ -27,6 +27,10 @@ password = os.environ.get("SMTP_PASS")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("APP_SEC_KEY")
+app.config['MAIL_SERVER'] = 'smtp.gmail.com' 
+app.config['MAIL_PORT'] = '465' 
+app.config['MAIL_USE_TLS'] = False 
+app.config['MAIL_USE_SSL'] = True
 Bootstrap5(app)
 ckeditor = CKEditor(app)
 
