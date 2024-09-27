@@ -377,8 +377,8 @@ def send_message(name, user_email, phone, message):
     # client = Client(account_sid, auth_token)
     message = client.messages.create(
         body= msg_content,
-        from_=f"whatsapp:{os.environ.get("TWILIO_API_NUM")}",
-        to=f"whatsapp:{os.environ.get("TWILIO_MY_NUM")}",
+        from_=f'whatsapp:{os.environ.get("TWILIO_API_NUM")}',
+        to=f'whatsapp:{os.environ.get("TWILIO_MY_NUM")}',
     )
 
 
