@@ -1,5 +1,7 @@
 import requests
 import smtplib
+import twilio
+from twilio.rest import Client
 from datetime import datetime
 from flask import Flask, render_template, redirect, url_for, request, jsonify, flash, send_from_directory
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
@@ -20,9 +22,13 @@ from functools import wraps
 from flask import abort
 import os
 
+
 # Email and Password for SMTPLIB:
 my_email = "cwdebojyoti@gmail.com"
 password = os.environ.get("SMTP_PASS")
+
+client = Client(os.environ.get("TWILIO_SID"), os.environ.get("TWILIO_AUTH_TOKEN"))
+
 
 
 app = Flask(__name__)
@@ -354,15 +360,26 @@ def manage_users():
 
 
 
+# def send_message(name, user_email, phone, message):
+#     msg_content = f"Name: {name}\nemail: {user_email}\nPhone: {phone}\nMessage: {message}"
+#     connection = smtplib.SMTP("smtp.gmail.com")
+#     connection.starttls()
+#     connection.login(user= my_email, password= password)
+#     connection.sendmail(from_addr= my_email, 
+#                             to_addrs= "debojyotichattoraj1996@gmail.com", 
+#                             msg= f"Subject: New User Information!\n\n {msg_content}")
+#     connection.close()
+
+
+
 def send_message(name, user_email, phone, message):
     msg_content = f"Name: {name}\nemail: {user_email}\nPhone: {phone}\nMessage: {message}"
-    connection = smtplib.SMTP("smtp.gmail.com")
-    connection.starttls()
-    connection.login(user= my_email, password= password)
-    connection.sendmail(from_addr= my_email, 
-                            to_addrs= "debojyotichattoraj1996@gmail.com", 
-                            msg= f"Subject: New User Information!\n\n {msg_content}")
-    connection.close()
+    # client = Client(account_sid, auth_token)
+    message = client.messages.create(
+        body= msg_content,
+        from_=f"whatsapp:{os.environ.get("TWILIO_API_NUM")}",
+        to=f"whatsapp:{os.environ.get("TWILIO_MY_NUM")}",
+    )
 
 
 
