@@ -5,4 +5,8 @@ www.chromtocode.in {
 
 chromtocode.in {
     reverse_proxy localhost:8000
+    route /.well-known/acme-challenge/* {
+        root * /var/www/chromtocode.in
+        file_server
+    }
 }
