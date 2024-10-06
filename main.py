@@ -47,7 +47,7 @@ login_manager.init_app(app)
 # CREATE DATABASE
 class Base(DeclarativeBase):
     pass
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', 'sqlite:///posts.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ubuntu@localhost/blogs'
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
@@ -360,26 +360,26 @@ def manage_users():
 
 
 
-# def send_message(name, user_email, phone, message):
-#     msg_content = f"Name: {name}\nemail: {user_email}\nPhone: {phone}\nMessage: {message}"
-#     connection = smtplib.SMTP("smtp.gmail.com")
-#     connection.starttls()
-#     connection.login(user= my_email, password= password)
-#     connection.sendmail(from_addr= my_email, 
-#                             to_addrs= "debojyotichattoraj1996@gmail.com", 
-#                             msg= f"Subject: New User Information!\n\n {msg_content}")
-#     connection.close()
-
-
-
 def send_message(name, user_email, phone, message):
     msg_content = f"Name: {name}\nemail: {user_email}\nPhone: {phone}\nMessage: {message}"
-    # client = Client(account_sid, auth_token)
-    message = client.messages.create(
-        body= msg_content,
-        from_=f'whatsapp:{os.environ.get("TWILIO_API_NUM")}',
-        to=f'whatsapp:{os.environ.get("TWILIO_MY_NUM")}',
-    )
+    connection = smtplib.SMTP("smtp.gmail.com")
+    connection.starttls()
+    connection.login(user= my_email, password= password)
+    connection.sendmail(from_addr= my_email, 
+                            to_addrs= "debojyotichattoraj1996@gmail.com", 
+                            msg= f"Subject: New User Information!\n\n {msg_content}")
+    connection.close()
+
+
+
+# def send_message(name, user_email, phone, message):
+#     msg_content = f"Name: {name}\nemail: {user_email}\nPhone: {phone}\nMessage: {message}"
+#     # client = Client(account_sid, auth_token)
+#     message = client.messages.create(
+#         body= msg_content,
+#         from_=f'whatsapp:{os.environ.get("TWILIO_API_NUM")}',
+#         to=f'whatsapp:{os.environ.get("TWILIO_MY_NUM")}',
+#     )
 
 
 
