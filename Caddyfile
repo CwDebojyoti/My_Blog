@@ -1,3 +1,9 @@
-http://129.154.242.103 {
+www.chromtocode.in {
+    redir https:chromtocode.in{uri}
+}
+
+
+
+chromtocode.in {
     reverse_proxy localhost:8000
 }
