@@ -375,7 +375,7 @@ def manage_users():
 def send_message(name, user_email, phone, message):
     msg_content = f"Name: {name}\nemail: {user_email}\nPhone: {phone}\nMessage: {message}"
     # client = Client(account_sid, auth_token)
-    message = client.messages.create(
+    message = client.sms.messages.create(
         body= msg_content,
         from_=f'whatsapp:{os.environ.get("TWILIO_API_NUM")}',
         to=f'whatsapp:{os.environ.get("TWILIO_MY_NUM")}',
