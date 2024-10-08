@@ -51,25 +51,38 @@
             {{ ckeditor.config(name='comment_text') }}
             <!-- Create the wtf quick form from CommentForm -->
             {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+
+            <!-- Add code snippet option in CKEditor -->
+            <script>
+                var config = {
+                    extraPlugins: 'codesnippet',
+                    codeSnippet_theme: 'monokai-sublime',
+                    height: 356,
+                    removeButtons: 'PasteFromWord'
+                };
+
+                CKEDITOR.replace('comment_text', config);
+            </script>
+
         </div>
 
         <div class="comment container">
             <ul class="commentList">
-              <!-- Show all comments -->
-              {% for comment in blog_posts.comments: %}
-              <li>
-                <div class="commenterImage">
-                  <img src="{{ avatar(comment.comment_author.email) }}" />
-                </div>
-                <div class="commentText">
-                  {{comment.text|safe}}
-                  <span class="sub-text">{{comment.comment_author.name}}</span>
-                </div>
-              </li>
-              {% endfor %}
+                <!-- Show all comments -->
+                {% for comment in blog_posts.comments: %}
+                <li>
+                    <div class="commenterImage">
+                        <img src="{{ avatar(comment.comment_author.email) }}" />
+                    </div>
+                    <div class="commentText">
+                        {{comment.text|safe}}
+                        <span class="sub-text">{{comment.comment_author.name}}</span>
+                    </div>
+                </li>
+                {% endfor %}
             </ul>
-  
-          </div>
+
+        </div>
     </div>
 </article>
 

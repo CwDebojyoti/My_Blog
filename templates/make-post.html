@@ -24,6 +24,18 @@
         {{ ckeditor.load() }}
         {{ ckeditor.config(name='post_content') }}
         {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+
+        <!-- Add code snippet option in CKEditor -->
+        <script>
+          var config = {
+            extraPlugins: 'codesnippet',
+            codeSnippet_theme: 'monokai-sublime',
+            height: 356,
+            removeButtons: 'PasteFromWord'
+          };
+      
+          CKEDITOR.replace('post_content', config);
+        </script>
         
         
       </div>

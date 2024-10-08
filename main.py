@@ -39,6 +39,8 @@ app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 Bootstrap5(app)
 ckeditor = CKEditor(app)
+app.config['CKEDITOR_PKG_TYPE'] = 'full'
+app.config['CKEDITOR_CODE_SNIPPET'] = True
 
 # Creating and initiating Login manager for Flask login:
 login_manager = LoginManager()
