@@ -20,6 +20,7 @@ from datetime import date
 from forms import NewPost, RegisterForm, LoginForm, CommentForm
 from functools import wraps
 from flask import abort
+from flask_migrate import Migrate
 import os
 
 
@@ -50,6 +51,7 @@ class Base(DeclarativeBase):
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ubuntu@localhost/blogs'
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
+migrate = Migrate(app, db)
 
 
 def avatar(email):
@@ -96,7 +98,9 @@ class BlogPost(db.Model):
 
     comments = relationship("Comment", back_populates="parent_post")
 
-    
+    subject: Mapped[str] = mapped_column(String(100), nullable= False)
+
+
 
 class Comment(db.Model):
     __tablename__ = "comments"
@@ -157,6 +161,22 @@ def home():
     result = db.session.execute(db.select(BlogPost).order_by(BlogPost.id))
     all_post = result.scalars().all()
     return render_template("index.html", posts = all_post, year = current_year, logged_in = current_user.is_authenticated)
+
+
+@app.route("/coding_blog")
+def coding_blog():
+    current_year = datetime.now().year
+    result = db.session.execute(db.select(BlogPost).where(BlogPost.subject == "Code"))
+    coding_post = result.scalars().all()
+    return render_template("index_code.html", posts = coding_post, year = current_year, logged_in = current_user.is_authenticated)
+
+
+@app.route("/chemistry_blog")
+def chemistry_blog():
+    current_year = datetime.now().year
+    result = db.session.execute(db.select(BlogPost).where(BlogPost.subject == "Chemistry"))
+    coding_post = result.scalars().all()
+    return render_template("index_chemistry.html", posts = coding_post, year = current_year, logged_in = current_user.is_authenticated)
 
 
 @app.route('/register', methods = ['GET', 'POST'])
@@ -291,7 +311,8 @@ def make_post():
             date = datetime.now().date(),
             body = new_post.post_content.data,
             author = current_user,
-            img_url = new_post.bg_img_url.data
+            img_url = new_post.bg_img_url.data,
+            subject = new_post.subject.data
         )
 
         db.session.add(new_blog)

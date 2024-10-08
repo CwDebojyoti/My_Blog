@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
+from wtforms import StringField, SubmitField, PasswordField, SelectField
 from wtforms.validators import DataRequired, URL
 from flask_ckeditor import CKEditorField
 
@@ -8,6 +8,7 @@ from flask_ckeditor import CKEditorField
 class NewPost(FlaskForm):
     post_title = StringField('Post Title', validators=[DataRequired()])
     subtitle = StringField('Subtitle', validators=[DataRequired()])
+    subject = SelectField('Subject', choices=['Code','Chemistry'], validators=[DataRequired()])
     # author_name = StringField("Author's Name", validators=[DataRequired()])
     bg_img_url = StringField("URL for Background Image", validators=[DataRequired()])
     post_content = CKEditorField("Body of the Post", validators=[DataRequired()])
