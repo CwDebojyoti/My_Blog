@@ -57,6 +57,22 @@
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4"
                             href="{{ url_for('manage_users') }}">Manage Users</a></li>
                     {%endif%}
+
+
+                    <!-- Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle px-lg-3 py-3 py-lg-4" href="#" id="navbarDropdown"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Topics
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('coding_blog') }}">Code</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('chemistry_blog') }}">Chemistry</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('home') }}">All</a>
+                            
+                        </ul>
+                    </li>
+
                 </ul>
             </div>
         </div>
