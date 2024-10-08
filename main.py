@@ -20,7 +20,6 @@ from datetime import date
 from forms import NewPost, RegisterForm, LoginForm, CommentForm
 from functools import wraps
 from flask import abort
-from flask_migrate import Migrate
 import os
 
 
@@ -51,7 +50,7 @@ class Base(DeclarativeBase):
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ubuntu@localhost/blogs'
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
-migrate = Migrate(app, db)
+
 
 
 def avatar(email):
