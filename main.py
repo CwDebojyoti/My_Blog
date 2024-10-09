@@ -101,6 +101,8 @@ class BlogPost(db.Model):
 
     subject: Mapped[str] = mapped_column(String(100), nullable= False)
 
+    status: Mapped[str] = mapped_column(String(10), nullable= False)
+
 
 
 class Comment(db.Model):
@@ -159,15 +161,23 @@ def home():
     # response = requests.get(blog_url)
     # all_post = response.json()
     current_year = datetime.now().year
-    result = db.session.execute(db.select(BlogPost).order_by(BlogPost.id))
+    result = db.session.execute(db.select(BlogPost).where(BlogPost.status == "Published"))
     all_post = result.scalars().all()
     return render_template("index.html", posts = all_post, year = current_year, logged_in = current_user.is_authenticated)
+
+
+@app.route("/drafts")
+def drafts():
+    current_year = datetime.now().year
+    result = db.session.execute(db.select(BlogPost).where(BlogPost.status == "Draft"))
+    all_post = result.scalars().all()
+    return render_template("drafts.html", posts = all_post, year = current_year, logged_in = current_user.is_authenticated)
 
 
 @app.route("/coding_blog")
 def coding_blog():
     current_year = datetime.now().year
-    result = db.session.execute(db.select(BlogPost).where(BlogPost.subject == "Code"))
+    result = db.session.execute(db.select(BlogPost).where((BlogPost.subject == "Code") & (BlogPost.status == "Published")))
     coding_post = result.scalars().all()
     return render_template("index_code.html", posts = coding_post, year = current_year, logged_in = current_user.is_authenticated)
 
@@ -175,7 +185,7 @@ def coding_blog():
 @app.route("/chemistry_blog")
 def chemistry_blog():
     current_year = datetime.now().year
-    result = db.session.execute(db.select(BlogPost).where(BlogPost.subject == "Chemistry"))
+    result = db.session.execute(db.select(BlogPost).where((BlogPost.subject == "Chemistry") & (BlogPost.status == "Published")))
     coding_post = result.scalars().all()
     return render_template("index_chemistry.html", posts = coding_post, year = current_year, logged_in = current_user.is_authenticated)
 
@@ -306,6 +316,10 @@ def make_post():
 
 
     if new_post.validate_on_submit():
+        if new_post.submit_draft.data:
+            post_status = "Draft"
+        elif new_post.submit_publish.data:
+            post_status = "Published"
         new_blog = BlogPost(
             title = new_post.post_title.data,
             subtitle = new_post.subtitle.data,
@@ -313,7 +327,8 @@ def make_post():
             body = new_post.post_content.data,
             author = current_user,
             img_url = new_post.bg_img_url.data,
-            subject = new_post.subject.data
+            subject = new_post.subject.data,
+            status=post_status
         )
 
         db.session.add(new_blog)
@@ -339,12 +354,18 @@ def edit_post(post_id):
         post_content = post_to_edit.body
     )
 
+    if edit_post_form.submit_draft.data:
+            post_status = "Draft"
+    elif edit_post_form.submit_publish.data:
+        post_status = "Published"
+
     if edit_post_form.validate_on_submit():
         post_to_edit.title = edit_post_form.post_title.data
         post_to_edit.subtitle = edit_post_form.subtitle.data
         post_to_edit.author = current_user
         post_to_edit.img_url = edit_post_form.bg_img_url.data
         post_to_edit.body = edit_post_form.post_content.data
+        post_to_edit.status = post_status
 
         db.session.commit()
 
@@ -372,7 +393,7 @@ def manage_users():
     current_year = datetime.now().year
     if request.method == 'POST':
         user_id = request.form.get('user_id')
-        new_role = request.form.get('role')
+        new_role = request.form.get(f'role_{user_id}')
         user = User.query.get(user_id)
         if user:
             user.role = new_role

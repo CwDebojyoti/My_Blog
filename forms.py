@@ -12,7 +12,8 @@ class NewPost(FlaskForm):
     # author_name = StringField("Author's Name", validators=[DataRequired()])
     bg_img_url = StringField("URL for Background Image", validators=[DataRequired()])
     post_content = CKEditorField("Body of the Post", validators=[DataRequired()])
-    submit = SubmitField('Create')
+    submit_draft = SubmitField('Save as Draft')
+    submit_publish = SubmitField('Publish')
 
 
 # Create a RegisterForm to register new users:

@@ -39,13 +39,13 @@
             {% endfor %}
 
 
-            <div class="d-flex justify-content-start mb-4">
+            <div class="d-flex justify-content-center mb-4">
                 <!-- TODO: Adding new posts -->
                 {%if logged_in and current_user.role == 'admin':%}
-                <a class="btn btn-primary float-right custom_margin" href="{{ url_for('make_post') }}">Create New
+                <a class="btn btn-primary float-right" href="{{ url_for('make_post') }}">Create New
                     Post</a>
                 {%endif%}
-                <a class="d-flex btn btn-primary justify-content-end" href="#">Older Post</a>
+                
             </div>
 
             <!-- Pager-->
