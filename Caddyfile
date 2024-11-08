@@ -3,7 +3,19 @@ www.chromtocode.in {
 }
 
 
-
 chromtocode.in {
     reverse_proxy localhost:8000
+}
+
+
+
+
+
+www.portfolioofdebojyoti.in {
+    redir https:chromtocode.in{uri}
+}
+
+
+portfolioofdebojyoti.in {
+    reverse_proxy localhost:8001
 }
